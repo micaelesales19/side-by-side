@@ -1,10 +1,13 @@
 // ignore_for_file: file_names
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:side_by_side/utils/pwa_install_page.dart'; // <-- novo import condicional
+import 'package:side_by_side/utils/auth_check.dart';
 import 'package:side_by_side/main.dart';
 import 'package:side_by_side/utils/AConstants.dart';
-import 'package:side_by_side/utils/auth_check.dart';
 
+// ignore: must_be_immutable
 class ASplashScreen extends StatefulWidget {
   const ASplashScreen({super.key});
 
@@ -17,12 +20,42 @@ class _ASplashScreenState extends State<ASplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
+    _redirect();
+  }
+
+  /*Future<void> verificarWalkthrough() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final pular = prefs.getBool('pular_walkthrough') ?? false;
+
+    if (pular) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const CheckUserLoggedInOrNot()),
+        MaterialPageRoute(builder: (_) => const AWelcomeScreen()),
       );
-    });
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const AWalkThroughScreen()),
+      );
+    }
+  }*/
+
+  void _redirect() async {
+    // Dá um tempinho para mostrar o splash
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (!kIsWeb) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => PwaInstallPage()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => CheckUserLoggedInOrNot()),
+      );
+    }
   }
 
   @override

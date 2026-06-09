@@ -31,6 +31,7 @@
   <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>Side by Side</title>
+  <meta name="theme-color" content="#F7CB2D"> <!-- 🔥 ESSA LINHA É IMPORTANTE -->
   <link rel="manifest" href="manifest.json">
 
   <script>
@@ -64,7 +65,7 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/firebase-messaging-sw.js')
+        navigator.serviceWorker.register('firebase-messaging-sw.js')
           .then(function (registration) {
             console.log('Service Worker registrado com sucesso:', registration.scope);
           }, function (err) {
@@ -74,6 +75,7 @@
     }
   </script>
 
+  <script src="pwa.js"></script>
   <script type="module" src="push.js"></script>
 
 </body>

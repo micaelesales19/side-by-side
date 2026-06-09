@@ -4,8 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:side_by_side/data/licao.dart';
-import 'package:side_by_side/data/licao_detalhada.dart';
+import 'package:side_by_side/main.dart';
 import 'package:side_by_side/model/devocional.dart';
 import 'package:side_by_side/model/geral.dart';
 import 'package:side_by_side/model/licao.dart';
@@ -18,6 +17,17 @@ import 'package:side_by_side/utils/exceptions.dart';
 import 'package:side_by_side/utils/http_client.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+String tamanho(double largura) {
+  debugPrint('Largura do Dispositivo: $largura');
+  return largura < 380
+      ? "celular_pequeno"
+      : largura > 380 && largura < 600
+      ? "celular_medio"
+      : largura > 600 && largura <= 1024
+      ? "tablet"
+      : "computador";
+}
+
 List<Modulos> getModulos() {
   List<Modulos> MODULOS_LIST = [
     Modulos(
@@ -25,7 +35,7 @@ List<Modulos> getModulos() {
       title: 'A Trilha',
       subtitle: 'O Deus Criador\ne eterno',
       descricao:
-          'O primeiro modulo do nosso currículo e o de Criacionismo. A Primeira lição trata da existência de Deus, e é a mais importante porque nada faz sentido se não assumirmos que existe um Deus e que Ele é eterno e criador. As lições seguintes desse modulo tratam do que Deus criou e de como Ele criou. Há pequenas experiencias cientificas e dados que ajudarão as crianças a tomarem uma posição firme frente ao evolucionismo pregado nas escolas.\nA Trilha é a base para entender sobre Criacionismo. A primeira lição trata da existência de Deus, e é a mais importante porque nada faz sentido se não assumirmos que existe um Deus e que Ele é eterno e criador. As lições seguintes desse módulo tratam do que Deus criou e de como Ele criou. Há pequenas experiências científicas e dados que ajudarão as crianças a tomarem uma posição firme frente ao evolucionismo pregado nas escolas. A intenção é que elas assumam essa verdade para elas pela fé, porém também com lógica e racionalidade.',
+          'A Trilha é a base para entender sobre Criacionismo. A primeira lição trata da existência de Deus, e é a mais importante porque nada faz sentido se não assumirmos que existe um Deus e que Ele é eterno e criador. As lições seguintes desse módulo tratam do que Deus criou e de como Ele criou. Há pequenas experiências científicas e dados que ajudarão as crianças a tomarem uma posição firme frente ao evolucionismo pregado nas escolas. A intenção é que elas assumam essa verdade para elas pela fé, porém também com lógica e racionalidade.',
       parte1: 'Aquecimento',
       parte2: 'Mapa da Trilha',
       parte3: 'Fazendo as Malas',
@@ -80,7 +90,8 @@ List<Modulos> getModulos() {
   return MODULOS_LIST;
 }
 
-var whatsappUrl = "whatsapp://send?phone=5585987169712&text=Olá,tudo bem?";
+var whatsappUrl =
+    "whatsapp://send?phone=5585987169712&text=Olá,tudo bem? Preciso de ajuda com o app Side By Side.";
 
 Future<void> abrirwhatsapp(Uri url) async {
   if (!await launchUrl(url)) {
@@ -91,8 +102,21 @@ Future<void> abrirwhatsapp(Uri url) async {
 List<BotoesAcessoRapido> getbotoesRapidos(BuildContext context) {
   List<BotoesAcessoRapido> list = [
     BotoesAcessoRapido(
+      title: 'Ajuda',
+      icon: Icon(
+        Icons.question_mark_rounded,
+        size: 30,
+        color: appStore.isDarkModeOn ? white : black,
+      ),
+      onTap: () => abrirwhatsapp(Uri.parse(whatsappUrl)),
+    ),
+    BotoesAcessoRapido(
       title: 'Cadastrar\nmeu(s) filho(s)',
-      icon: const Icon(Icons.add_rounded, size: 30, color: black),
+      icon: Icon(
+        Icons.add_rounded,
+        size: 30,
+        color: appStore.isDarkModeOn ? white : black,
+      ),
       onTap: () {
         Navigator.push(
           context,
@@ -102,10 +126,10 @@ List<BotoesAcessoRapido> getbotoesRapidos(BuildContext context) {
     ),
     BotoesAcessoRapido(
       title: 'Vê todos os\nMódulos',
-      icon: const Icon(
+      icon: Icon(
         Icons.local_fire_department_outlined,
         size: 30,
-        color: black,
+        color: appStore.isDarkModeOn ? white : black,
       ),
       onTap: () {
         Navigator.push(
@@ -120,11 +144,6 @@ List<BotoesAcessoRapido> getbotoesRapidos(BuildContext context) {
       icon: const Icon(Icons.file_copy_outlined, size: 30, color: black),
       onTap: () {},
     ),*/
-    BotoesAcessoRapido(
-      title: 'Ajuda',
-      icon: const Icon(Icons.question_mark_rounded, size: 30, color: black),
-      onTap: () => abrirwhatsapp(Uri.parse(whatsappUrl)),
-    ),
   ];
 
   return list;
@@ -170,8 +189,11 @@ abstract class IFuncoes {
   );
 
   Future<List<Licaos>> getLicoes();
-  List<LicaoFlipPage> licoesFlip(BuildContext context);
   List<Devocional> getDevocionais();
+
+  Future<String> getMomentoOracao(String uid);
+  Future<String> getPerguntePai(String uid);
+  Future<Desafio> getDesafio(String idModulo, String nLicao);
 
   Future<bool> updateProgresso(
     String id,
@@ -205,6 +227,9 @@ abstract class IFuncoes {
     String nome,
     String idade,
   );
+
+  Future<bool> editHorarioPG(int idPg, String horario);
+
   Future<bool> excluirCrianca(String idCrianca);
 }
 
@@ -303,6 +328,68 @@ class IFuncoesPHP implements IFuncoes {
   }
 
   @override
+  Future<String> getMomentoOracao(String uid) async {
+    final response = await client.get(
+      url:
+          "https://sidebyside.campbrasil.com/api/php/getMotivosOracao.php?uid=$uid",
+    );
+    if (response.statusCode == 200) {
+      debugPrint("sucesso link - informações getMomentoOração");
+
+      var consultarPHP = jsonDecode(response.body);
+
+      if (consultarPHP == "dados_vazios") {
+        debugPrint("informações getMomentoOração - dados vazios");
+        return '';
+      } else if (consultarPHP == "db_erro") {
+        debugPrint("informações getMomentoOração - db_erro");
+        return '';
+      } else if (consultarPHP == "erro") {
+        debugPrint("informações getMomentoOração - erro");
+        return '';
+      } else {
+        debugPrint("informações getMomentoOração - sucesso");
+        return consultarPHP;
+      }
+    } else if (response.statusCode == 404) {
+      throw NotFoundException("A url informada não é válida.");
+    } else {
+      throw Exception("Não foi possível carregar os usuários.");
+    }
+  }
+
+  @override
+  Future<String> getPerguntePai(String uid) async {
+    final response = await client.get(
+      url:
+          "https://sidebyside.campbrasil.com/api/php/getPerguntaPai.php?uid=$uid",
+    );
+    if (response.statusCode == 200) {
+      debugPrint("sucesso link - informações getMomentoPerguntePai");
+
+      var consultarPHP = jsonDecode(response.body);
+
+      if (consultarPHP == "dados_vazios") {
+        debugPrint("informações getMomentoPai - dados vazios");
+        return '';
+      } else if (consultarPHP == "db_erro") {
+        debugPrint("informações getMomentoPai - db_erro");
+        return '';
+      } else if (consultarPHP == "erro") {
+        debugPrint("informações getMomentoPai - erro");
+        return '';
+      } else {
+        debugPrint("informações getMomentoPai - sucesso");
+        return consultarPHP;
+      }
+    } else if (response.statusCode == 404) {
+      throw NotFoundException("A url informada não é válida.");
+    } else {
+      throw Exception("Não foi possível carregar os usuários.");
+    }
+  }
+
+  /*@override
   List<LicaoFlipPage> licoesFlip(BuildContext context) {
     final licoes_data = licoesModulos(context);
 
@@ -317,10 +404,10 @@ class IFuncoesPHP implements IFuncoes {
       ...licoes_data.licao_trilha_6,
       ...licoes_data.licao_trilha_7,
       ...licoes_data.licao_trilha_8,
+      ...licoes_data.licao_mergulho_1,
     ];
-
     return licoes;
-  }
+  }*/
 
   @override
   List<Devocional> getDevocionais() {
@@ -1192,6 +1279,40 @@ class IFuncoesPHP implements IFuncoes {
   }
 
   @override
+  Future<Desafio> getDesafio(String idModulo, String nLicao) async {
+    final response = await client.get(
+      url:
+          "https://sidebyside.campbrasil.com/api/php/getDesafio.php?id_modulo=$idModulo&n_licao=$nLicao",
+    );
+
+    if (response.statusCode == 200) {
+      final consultarPHP = jsonDecode(response.body);
+
+      if (consultarPHP == "dados_vazios") {
+        throw Exception("Dados vazios");
+      }
+
+      if (consultarPHP == "db_erro") {
+        throw Exception("Erro no banco");
+      }
+
+      if (consultarPHP == "erro") {
+        throw Exception("Erro na consulta");
+      }
+
+      debugPrint("informações desafio - sucesso $consultarPHP");
+
+      return Desafio.fromMap(consultarPHP);
+    }
+
+    if (response.statusCode == 404) {
+      throw NotFoundException("A url informada não é válida.");
+    }
+
+    throw Exception("Não foi possível carregar os usuários.");
+  }
+
+  @override
   Future<List<Licaos>> getLicoes() async {
     List<Licaos> LICOES_LIST = [];
     debugPrint('chamando a função getLicoes');
@@ -1283,11 +1404,11 @@ class IFuncoesPHP implements IFuncoes {
     String idModulo,
     String nLicao,
   ) async {
-    debugPrint('chamando a função updateProgresso');
+    debugPrint('chamando a função finalizou lição');
 
     final response = await client.get(
       url:
-          "https://sidebyside.campbrasil.com/api/php/updateProgresso.php?id=$id&idLider=$uid&idPg=$idPg&idModulo=$idModulo&nLicao=$nLicao",
+          "https://sidebyside.campbrasil.com/api/php/updateFinalizouLicao.php?id=$id&idLider=$uid&idPg=$idPg&idModulo=$idModulo&nLicao=$nLicao",
     );
 
     if (response.statusCode == 200) {
@@ -1405,6 +1526,40 @@ class IFuncoesPHP implements IFuncoes {
       } else if (body == 'Database erro') {
         return false;
       } else if (body == 'crianca_n_encontrada') {
+        return false;
+      } else if (body == 'erro_na_edicao') {
+        return false;
+      } else if (body == 'sucesso') {
+        return true;
+      } else {
+        return false;
+      }
+    } else if (response.statusCode == 404) {
+      throw NotFoundException("A url informada não é válida.");
+    } else {
+      throw Exception("Não foi possível carregar os usuários.");
+    }
+  }
+
+  @override
+  Future<bool> editHorarioPG(int idPg, String horario) async {
+    debugPrint('chamando a função addCrianca');
+
+    final response = await client.get(
+      url:
+          "https://sidebyside.campbrasil.com/api/php/editPGHorario.php?idpg=$idPg&horario=$horario",
+    );
+
+    if (response.statusCode == 200) {
+      final body = jsonDecode(response.body);
+
+      debugPrint('resposta $body');
+
+      if (body == 'dados_vazios') {
+        return false;
+      } else if (body == 'Database erro') {
+        return false;
+      } else if (body == 'pg_n_encontrado') {
         return false;
       } else if (body == 'erro_na_edicao') {
         return false;

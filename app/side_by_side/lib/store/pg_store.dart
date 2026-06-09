@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:side_by_side/data/licao_detalhada.dart';
 import 'package:side_by_side/model/devocional.dart';
 import 'package:side_by_side/model/licao.dart';
 import 'package:side_by_side/model/pg.dart';
@@ -33,6 +32,11 @@ class PgStore {
 
   final ValueNotifier<bool> isFavoriteModulo = ValueNotifier<bool>(false);
   final ValueNotifier<bool> isSaveModulo = ValueNotifier<bool>(false);
+
+  final ValueNotifier<String> momentoOracao = ValueNotifier<String>('');
+
+  final ValueNotifier<String> perguntePai = ValueNotifier<String>('');
+  final ValueNotifier<Desafio?> desafio = ValueNotifier<Desafio?>(null);
 
   PgStore({required this.repository});
 
@@ -113,9 +117,21 @@ class PgStore {
         '2',
       );
 
+      final getDesafio = await repository.getDesafio(
+        pg.value.idModulo.toString(),
+        pg.value.nLicao.toString(),
+      );
+
+      final momento_oracao = await repository.getMomentoOracao(uid);
+      final pergunta_pai = await repository.getPerguntePai(uid);
+
       debugPrint('progresso PG ${progresso[0].nLicao}');
 
       progressoLicao.value = progresso;
+
+      desafio.value = getDesafio;
+      momentoOracao.value = momento_oracao;
+      perguntePai.value = pergunta_pai;
 
       final devocionais = await repository.getInformacoesDevocionais(
         uid,
@@ -204,14 +220,6 @@ class PgStore {
     }
 
     isLoading.value = false;
-  }
-
-  List<LicaoFlipPage> getlicoesFlip(BuildContext context) {
-    // lista reversa
-    //final result = repository.licoesFlip(context).reversed.toList();
-    // lista ok
-    final result = repository.licoesFlip(context);
-    return result;
   }
 
   List<Devocional> getDevocionais(int idModulo, int idLicao) {
@@ -316,6 +324,19 @@ class PgStore {
     );
     final criancas = await repository.getCriancasUser(uid, pg.value.id);
     listCriancas.value = criancas;
+    return result;
+  }
+
+  Future<bool> editarHorarioNotificacao(
+    String uid,
+    int idPg,
+    String horario,
+  ) async {
+    final result = repository.editHorarioPG(idPg, horario);
+
+    final pg_query = await repository.getInformacoesPG(uid);
+    pg.value = pg_query;
+
     return result;
   }
 }
