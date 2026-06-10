@@ -145,6 +145,8 @@ class _AHomeFragmentState extends State<AHomeFragment> {
                                       (context) => ADetalheModulosScreen(
                                         modulo: moduloQuery.first,
                                         index: 3,
+                                        usuario: usuario,
+                                        pg: pg,
                                       ),
                                 ),
                               );

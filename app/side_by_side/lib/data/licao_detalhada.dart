@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:side_by_side/main.dart';
 
 class DetalhesModulos {
   int idModulo;
@@ -38,7 +39,9 @@ List<DetalhesModulos> listDetalhesModulos = [
     1,
     'Mistérios',
     'Um momento investigativo e divertido onde a criança precisa descobrir ou resolver um “mistério” relacionado ao conteúdo. Ajuda a fixar a lição de forma lúdica, incentivando o pensamento crítico e a curiosidade.',
-    'assets/image/icons/misterios.png',
+    appStore.isDarkModeOn
+        ? 'assets/image/icons/misterios-off.png'
+        : 'assets/image/icons/misterios.png',
   ),
   DetalhesModulos(
     1,
@@ -88,19 +91,25 @@ List<DetalhesModulos> listDetalhesModulos = [
     3,
     'Ponte',
     'A introdução da lição. Como uma ponte, conecta o mundo da criança ao tema do dia, despertando interesse e curiosidade para atravessar e descobrir o que Deus tem a ensinar.',
-    'assets/image/icons/santuario.png',
+    appStore.isDarkModeOn
+        ? 'assets/image/icons/santuario-off.png'
+        : 'assets/image/icons/santuario.png',
   ),
   DetalhesModulos(
     3,
     'Planta do Santuário',
     'É o ensino principal. Assim como um santuário precisa de um projeto firme, a lição mostra que a vida cristã precisa ser construída sobre a Palavra. Aqui, a criança descobre verdades fundamentais para edificar sua fé.',
-    'assets/image/icons/santuario.png',
+    appStore.isDarkModeOn
+        ? 'assets/image/icons/santuario-off.png'
+        : 'assets/image/icons/santuario.png',
   ),
   DetalhesModulos(
     3,
     'Mãos à Obra',
     'Encerramento prático. É hora de colocar em ação o que foi aprendido, com oração, reflexão e incentivo para viver como “casa de Deus” durante a semana.',
-    'assets/image/icons/santuario.png',
+    appStore.isDarkModeOn
+        ? 'assets/image/icons/santuario-off.png'
+        : 'assets/image/icons/santuario.png',
   ),
   DetalhesModulos(
     3,
@@ -162,19 +171,25 @@ List<DetalhesModulos> listDetalhesModulos = [
     5,
     'Bilheteria',
     'A introdução da lição. Aqui a criança “compra o bilhete” para essa viagem final, sendo recebida com entusiasmo e começando a refletir sobre o lugar onde está na história de Deus.',
-    'assets/image/icons/estacao_final.png',
+    appStore.isDarkModeOn
+        ? 'assets/image/icons/estacao_final-off.png'
+        : 'assets/image/icons/estacao_final.png',
   ),
   DetalhesModulos(
     5,
     'Plataforma',
     'É o ensino principal. A criança entende o panorama da história bíblica desde o Novo Testamento até a promessa do céu. Aprende que a igreja continua viva, atuante, e que ela faz parte dessa missão.',
-    'assets/image/icons/estacao_final.png',
+    appStore.isDarkModeOn
+        ? 'assets/image/icons/estacao_final-off.png'
+        : 'assets/image/icons/estacao_final.png',
   ),
   DetalhesModulos(
     5,
     'Embarque',
     'Encerramento com aplicação prática. É hora de entrar no “trem” da fé e seguir a jornada, vivendo como alguém que tem um destino eterno com Deus. Inclui oração, reflexão e desafio de viver com esperança e propósito.',
-    'assets/image/icons/estacao_final.png',
+    appStore.isDarkModeOn
+        ? 'assets/image/icons/estacao_final-off.png'
+        : 'assets/image/icons/estacao_final.png',
   ),
   DetalhesModulos(
     5,

@@ -211,7 +211,12 @@ class _AModuloPesquisaFragmentState extends State<AModuloPesquisaFragment>
             context,
             MaterialPageRoute(
               builder:
-                  (context) => ADetalheModulosScreen(modulo: modulo, index: 0),
+                  (context) => ADetalheModulosScreen(
+                    modulo: modulo,
+                    index: 0,
+                    usuario: widget.usuario,
+                    pg: pg,
+                  ),
             ),
           );
         },

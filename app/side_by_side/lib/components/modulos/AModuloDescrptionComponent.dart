@@ -1,6 +1,5 @@
 // ignore_for_file: file_names
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:side_by_side/main.dart';
 import 'package:side_by_side/model/modulo.dart';
 import 'package:side_by_side/store/pg_store.dart';
@@ -24,13 +23,6 @@ class AModuloDescrptionComponent extends StatefulWidget {
 
 class _AModuloDescrptionComponentState
     extends State<AModuloDescrptionComponent> {
-  var image = Image.asset(
-    'assets/image/appetit/p3.jpg',
-    fit: BoxFit.cover,
-    color: Colors.black.withOpacity(0.5),
-    colorBlendMode: BlendMode.darken,
-  );
-
   final PgStore storePg = PgStore(
     repository: IFuncoesPHP(client: HttpClient()),
   );
@@ -71,7 +63,7 @@ class _AModuloDescrptionComponentState
                         //height: MediaQuery.of(context).size.height * 0.7,
                         color:
                             appStore.isDarkModeOn
-                                ? context.cardColor
+                                ? appColorSecondary
                                 : appColorPrimary,
                         child: SingleChildScrollView(
                           child: Padding(
@@ -81,7 +73,10 @@ class _AModuloDescrptionComponentState
                             ),
                             child: Text(
                               e.descricao,
-                              style: colorPrimaryRegulard18,
+                              style:
+                                  appStore.isDarkModeOn
+                                      ? colorWhiteRegulard18
+                                      : colorPrimaryRegulard18,
                               textAlign: TextAlign.justify,
                             ),
                           ),

@@ -266,7 +266,8 @@ class _AProfileFragmentState extends State<AProfileFragment>
                   debugPrint('atualização $atualizacao');
                   if (atualizacao) {}
                 },
-                activeColor: appColorSecondary,
+                activeColor:
+                    appStore.isDarkModeOn ? appColorPrimary : appColorSecondary,
               ),
             ),
             ListTile(

@@ -30,14 +30,6 @@ class _APageDesafioState extends State<APageDesafio> {
   List<Licaos> listlicoes = [];
   List<Modulos> modulo = [];
 
-  List<String> lista1 = [
-    'um brinquedo;',
-    'uma comida;',
-    'uma roupa;',
-    'uma casa;',
-    'uma planta.',
-  ];
-
   final PgStore storePg = PgStore(
     repository: IFuncoesPHP(client: HttpClient()),
   );
@@ -135,10 +127,16 @@ class _APageDesafioState extends State<APageDesafio> {
                                 child: Container(
                                   height: 50,
                                   width: 50,
-                                  color: appColorSecondary,
-                                  child: const Icon(
+                                  color:
+                                      appStore.isDarkModeOn
+                                          ? appColorPrimary
+                                          : appColorSecondary,
+                                  child: Icon(
                                     Icons.arrow_back_ios_outlined,
-                                    color: appTextColorWhite,
+                                    color:
+                                        appStore.isDarkModeOn
+                                            ? black
+                                            : appTextColorWhite,
                                   ),
                                 ),
                               ),

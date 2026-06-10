@@ -9,6 +9,7 @@ import 'package:side_by_side/main.dart';
 import 'package:side_by_side/model/modulo.dart';
 import 'package:side_by_side/model/usuario.dart';
 import 'package:side_by_side/utils/AColors.dart';
+import 'package:side_by_side/utils/AConstants.dart';
 
 // ignore: must_be_immutable
 class ADiscussionModuloComponent extends StatefulWidget {
@@ -96,7 +97,10 @@ class _ADiscussionModuloComponentState
                           const SizedBox(width: 8),
                           Text(
                             userInfo['nome'].toString(),
-                            style: const TextStyle(fontWeight: FontWeight.w700),
+                            style:
+                                appStore.isDarkModeOn
+                                    ? colorWhiteBold16
+                                    : colorPrimaryBold16,
                           ),
                           userInfo['uid'].toString() == usuario.uid
                               ? Row(
@@ -177,7 +181,7 @@ class _ADiscussionModuloComponentState
                                     ],
                                   ),
                                 ),
-                                const Expanded(
+                                /*const Expanded(
                                   flex: 39,
                                   child: Row(
                                     children: [
@@ -185,7 +189,7 @@ class _ADiscussionModuloComponentState
                                       Text('Responder'),
                                     ],
                                   ),
-                                ),
+                                ),*/
                               ],
                             ),
                           ],

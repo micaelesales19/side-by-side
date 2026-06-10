@@ -1,5 +1,9 @@
 // ignore_for_file: file_names
+import 'package:provider/provider.dart';
+import 'package:side_by_side/main.dart';
 import 'package:side_by_side/model/modulo.dart';
+import 'package:side_by_side/model/pg.dart';
+import 'package:side_by_side/model/usuario.dart';
 import 'package:side_by_side/screens/modulos/ADetalheModulosScreen.dart';
 import 'package:side_by_side/utils/AConstants.dart';
 import 'package:flutter/material.dart';
@@ -28,11 +32,17 @@ class _AModuloComponentState extends State<AModuloComponent> {
 
   @override
   Widget build(BuildContext context) {
+    Usuario usuario = Provider.of<UsuarioProvider>(context).getUsuario;
+    Pg pg = Provider.of<PgProvider>(context).getPg;
+
     if (widget.modulos.isEmpty) {
       return Center(
         child: Text(
           'Ainda não há módulos nesta categoria.',
-          style: colorPrimaryRegulard18,
+          style:
+              appStore.isDarkModeOn
+                  ? colorWhiteRegulard18
+                  : colorPrimaryRegulard18,
         ),
       );
     }
@@ -67,6 +77,8 @@ class _AModuloComponentState extends State<AModuloComponent> {
                     builder:
                         (context) => ADetalheModulosScreen(
                           modulo: widget.modulos[index],
+                          usuario: usuario,
+                          pg: pg,
                           index: 0,
                         ),
                   ),

@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:side_by_side/components/ARegisterFormComponent.dart';
 import 'package:side_by_side/screens/login/ALoginScreen.dart';
 import 'package:flutter/material.dart';
@@ -146,12 +147,15 @@ class _ARegisterScreenState extends State<ARegisterScreen> {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
-                    color: appColorSecondary,
+                    color:
+                        appStore.isDarkModeOn
+                            ? appColorPrimary
+                            : appColorSecondary,
                   ),
                   child: IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.arrow_back_ios_outlined,
-                      color: appTextColorWhite,
+                      color: appStore.isDarkModeOn ? black : appTextColorWhite,
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -176,13 +180,16 @@ class _ARegisterScreenState extends State<ARegisterScreen> {
                   child: Container(
                     width: 50,
                     height: 30,
-                    color: appColorSecondary,
+                    color:
+                        appStore.isDarkModeOn
+                            ? appColorPrimary
+                            : appColorSecondary,
                     child: Center(
                       child: InkWell(
                         child: Text(
                           '$pageindex/${reelsPages.length}',
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: appStore.isDarkModeOn ? black : Colors.white,
                             fontSize: 12,
                           ),
                         ),
@@ -228,11 +235,17 @@ class _ARegisterScreenState extends State<ARegisterScreen> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: appColorSecondary,
+                              backgroundColor:
+                                  appStore.isDarkModeOn
+                                      ? appColorPrimary
+                                      : appColorSecondary,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.arrow_back_ios_outlined,
-                              color: appTextColorWhite,
+                              color:
+                                  appStore.isDarkModeOn
+                                      ? black
+                                      : appTextColorWhite,
                             ),
                           ),
                         ),
@@ -258,8 +271,17 @@ class _ARegisterScreenState extends State<ARegisterScreen> {
                                     _cidadeController.text == '') {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text('Dados Vazios'),
-                                      backgroundColor: appColorSecondary,
+                                      content: Text(
+                                        'Dados Vazios',
+                                        style:
+                                            appStore.isDarkModeOn
+                                                ? colorPrimaryRegular16
+                                                : colorWhiteRegular16,
+                                      ),
+                                      backgroundColor:
+                                          appStore.isDarkModeOn
+                                              ? appColorPrimary
+                                              : appColorSecondary,
                                     ),
                                   );
                                 } else {
@@ -290,11 +312,18 @@ class _ARegisterScreenState extends State<ARegisterScreen> {
                                     await storePG.addPg(widget.uid);
 
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
+                                      SnackBar(
                                         content: Text(
                                           'Cadastro Realizado com Sucesso',
+                                          style:
+                                              appStore.isDarkModeOn
+                                                  ? colorPrimaryRegular16
+                                                  : colorWhiteRegular16,
                                         ),
-                                        backgroundColor: appColorSecondary,
+                                        backgroundColor:
+                                            appStore.isDarkModeOn
+                                                ? appColorPrimary
+                                                : appColorSecondary,
                                       ),
                                     );
                                     Future.delayed(
@@ -323,11 +352,15 @@ class _ARegisterScreenState extends State<ARegisterScreen> {
                                           SnackBar(
                                             content: Text(
                                               value,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                              ),
+                                              style:
+                                                  appStore.isDarkModeOn
+                                                      ? colorPrimaryRegular16
+                                                      : colorWhiteRegular16,
                                             ),
-                                            backgroundColor: appColorSecondary,
+                                            backgroundColor:
+                                                appStore.isDarkModeOn
+                                                    ? appColorPrimary
+                                                    : appColorSecondary,
                                           ),
                                         );
                                       } else if (value ==
@@ -364,12 +397,18 @@ class _ARegisterScreenState extends State<ARegisterScreen> {
                                             ScaffoldMessenger.of(
                                               context,
                                             ).showSnackBar(
-                                              const SnackBar(
+                                              SnackBar(
                                                 content: Text(
                                                   'Você já está cadastrado',
+                                                  style:
+                                                      appStore.isDarkModeOn
+                                                          ? colorPrimaryRegular16
+                                                          : colorWhiteRegular16,
                                                 ),
                                                 backgroundColor:
-                                                    appColorSecondary,
+                                                    appStore.isDarkModeOn
+                                                        ? appColorPrimary
+                                                        : appColorSecondary,
                                               ),
                                             );
                                             Future.delayed(
@@ -393,12 +432,15 @@ class _ARegisterScreenState extends State<ARegisterScreen> {
                                               SnackBar(
                                                 content: Text(
                                                   'Você já está cadastrado com esse e-mail, use um diferente ou faça o login!',
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
-                                                  ),
+                                                  style:
+                                                      appStore.isDarkModeOn
+                                                          ? colorPrimaryRegular16
+                                                          : colorWhiteRegular16,
                                                 ),
                                                 backgroundColor:
-                                                    appColorSecondary,
+                                                    appStore.isDarkModeOn
+                                                        ? appColorPrimary
+                                                        : appColorSecondary,
                                               ),
                                             );
                                           } else {
@@ -408,12 +450,15 @@ class _ARegisterScreenState extends State<ARegisterScreen> {
                                               SnackBar(
                                                 content: Text(
                                                   value_2,
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
-                                                  ),
+                                                  style:
+                                                      appStore.isDarkModeOn
+                                                          ? colorPrimaryRegular16
+                                                          : colorWhiteRegular16,
                                                 ),
                                                 backgroundColor:
-                                                    appColorSecondary,
+                                                    appStore.isDarkModeOn
+                                                        ? appColorPrimary
+                                                        : appColorSecondary,
                                               ),
                                             );
                                           }
@@ -442,11 +487,18 @@ class _ARegisterScreenState extends State<ARegisterScreen> {
                                         ScaffoldMessenger.of(
                                           context,
                                         ).showSnackBar(
-                                          const SnackBar(
+                                          SnackBar(
                                             content: Text(
                                               'Cadastro Realizado com Sucesso',
+                                              style:
+                                                  appStore.isDarkModeOn
+                                                      ? colorPrimaryRegular16
+                                                      : colorWhiteRegular16,
                                             ),
-                                            backgroundColor: appColorSecondary,
+                                            backgroundColor:
+                                                appStore.isDarkModeOn
+                                                    ? appColorPrimary
+                                                    : appColorSecondary,
                                           ),
                                         );
                                         Future.delayed(
@@ -471,11 +523,17 @@ class _ARegisterScreenState extends State<ARegisterScreen> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: appColorSecondary,
+                              backgroundColor:
+                                  appStore.isDarkModeOn
+                                      ? appColorPrimary
+                                      : appColorSecondary,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.arrow_forward_ios_outlined,
-                              color: appTextColorWhite,
+                              color:
+                                  appStore.isDarkModeOn
+                                      ? black
+                                      : appTextColorWhite,
                             ),
                           ),
                         ),

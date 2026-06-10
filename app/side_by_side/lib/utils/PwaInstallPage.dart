@@ -79,10 +79,17 @@ class _PwaInstallPageState extends State<PwaInstallPage> {
           children: [
             isIos
                 ? Padding(
-                  padding: const EdgeInsets.all(18.0),
+                  padding: const EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    bottom: 8,
+                  ),
                   child: Text(
                     'Para instalar o app no iOS, toque no botão de compartilhar no Safari e selecione "Adicionar à Tela de Início".',
-                    style: colorPrimaryBold18,
+                    style:
+                        appStore.isDarkModeOn
+                            ? colorWhiteBold18
+                            : colorPrimaryBold18,
                     textAlign: TextAlign.center,
                   ),
                 )
@@ -121,7 +128,7 @@ class _PwaInstallPageState extends State<PwaInstallPage> {
                       width: 150,
                       height: 60,
                       decoration: BoxDecoration(
-                        color: appColorPrimary,
+                        color: appColorSecondary,
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Row(
@@ -129,7 +136,7 @@ class _PwaInstallPageState extends State<PwaInstallPage> {
                         children: [
                           Icon(Icons.download),
                           const SizedBox(width: 4),
-                          Text('Instalar App', style: colorPrimaryBold16),
+                          Text('Instalar App', style: colorWhiteBold16),
                         ],
                       ),
                     ),
@@ -142,10 +149,16 @@ class _PwaInstallPageState extends State<PwaInstallPage> {
                           : appColorSecondary,
                 ),
 
-            Text(
-              'E ative as notificações!',
-              style: colorPrimaryBold18,
-              textAlign: TextAlign.center,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'E ative as notificações!',
+                style:
+                    appStore.isDarkModeOn
+                        ? colorWhiteBold18
+                        : colorPrimaryBold18,
+                textAlign: TextAlign.center,
+              ),
             ),
           ],
         ),

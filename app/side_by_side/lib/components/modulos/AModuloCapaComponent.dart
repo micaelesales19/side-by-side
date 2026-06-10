@@ -19,13 +19,6 @@ class AModuloCapaComponent extends StatefulWidget {
 }
 
 class _AModuloCapaComponentState extends State<AModuloCapaComponent> {
-  var image = Image.asset(
-    'assets/image/appetit/p3.jpg',
-    fit: BoxFit.cover,
-    color: Colors.black.withOpacity(0.5),
-    colorBlendMode: BlendMode.darken,
-  );
-
   final PgStore storePg = PgStore(
     repository: IFuncoesPHP(client: HttpClient()),
   );

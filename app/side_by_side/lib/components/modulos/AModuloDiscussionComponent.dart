@@ -8,8 +8,8 @@ import 'package:side_by_side/components/comentarios/ADiscussionModuloComponent.d
 import 'package:side_by_side/model/modulo.dart';
 import 'package:side_by_side/model/usuario.dart';
 import 'package:side_by_side/utils/AColors.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:side_by_side/main.dart';
+import 'package:side_by_side/utils/AConstants.dart';
 
 // ignore: must_be_immutable
 class AModuloDiscussionComponent extends StatefulWidget {
@@ -64,14 +64,18 @@ class _AModuloDiscussionComponentState
               children: [
                 TextField(
                   controller: _comentariosTextController,
+                  style:
+                      appStore.isDarkModeOn
+                          ? colorPrimaryRegular14
+                          : colorWhiteRegular14,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     fillColor:
                         appStore.isDarkModeOn
-                            ? context.cardColor
+                            ? appColorPrimary
                             : appColorSecondary,
                     filled: true,
-                    labelText: 'Escreva aqui',
+                    labelText: 'Escreva aqui...',
                     labelStyle: const TextStyle(color: Colors.grey),
                   ),
                 ),

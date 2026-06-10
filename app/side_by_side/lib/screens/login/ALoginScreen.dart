@@ -48,16 +48,19 @@ class _ALoginScreenState extends State<ALoginScreen> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: appColorSecondary,
+                    color:
+                        appStore.isDarkModeOn
+                            ? appColorPrimary
+                            : appColorSecondary,
                     borderRadius: BorderRadius.circular(25),
                   ),
                   width: 50,
                   height: 50,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(25),
-                    child: const Icon(
+                    child: Icon(
                       Icons.arrow_back_ios_outlined,
-                      color: appTextColorWhite,
+                      color: appStore.isDarkModeOn ? black : appTextColorWhite,
                     ),
                     onTap:
                         () => Navigator.push(
@@ -114,17 +117,15 @@ class _ALoginScreenState extends State<ALoginScreen> {
                       borderRadius: BorderRadius.circular(15),
                       child: TextFormField(
                         controller: emailController,
+                        style: colorPrimaryRegular16,
                         textInputAction: TextInputAction.next,
                         decoration: InputDecoration(
-                          labelStyle: colorSecondaryBold14,
                           border: InputBorder.none,
+                          fillColor: appColorPrimary,
+                          labelStyle: colorSecondaryBold14,
+                          filled: true,
                           labelText: 'E-mail',
                           hintText: 'Digite seu e-mail',
-                          filled: true,
-                          fillColor:
-                              appStore.isDarkModeOn
-                                  ? context.cardColor
-                                  : appShadowColor,
                           hintStyle: colorSecondaryBold14,
                         ),
                         validator: (value) {
@@ -144,16 +145,14 @@ class _ALoginScreenState extends State<ALoginScreen> {
                       child: TextFormField(
                         controller: passController,
                         obscureText: viewPassword,
+                        style: colorPrimaryRegular16,
                         decoration: InputDecoration(
-                          labelStyle: colorSecondaryBold14,
                           border: InputBorder.none,
+                          fillColor: appColorPrimary,
+                          labelStyle: colorSecondaryBold14,
+                          filled: true,
                           labelText: 'Senha',
                           hintText: 'Digite sua senha',
-                          filled: true,
-                          fillColor:
-                              appStore.isDarkModeOn
-                                  ? context.cardColor
-                                  : appShadowColor,
                           hintStyle: colorSecondaryBold14,
                           suffixIcon: IconButton(
                             onPressed:
@@ -217,8 +216,17 @@ class _ALoginScreenState extends State<ALoginScreen> {
                   if (emailController.text == '' || passController.text == '') {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Dados Vazios'),
-                        backgroundColor: appColorSecondary,
+                        content: Text(
+                          'Dados Vazios',
+                          style:
+                              appStore.isDarkModeOn
+                                  ? colorPrimaryRegular16
+                                  : colorWhiteRegular16,
+                        ),
+                        backgroundColor:
+                            appStore.isDarkModeOn
+                                ? appColorPrimary
+                                : appColorSecondary,
                       ),
                     );
                   } else {
@@ -233,9 +241,18 @@ class _ALoginScreenState extends State<ALoginScreen> {
 
                         if (iscadastrado) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Bem Vindo'),
-                              backgroundColor: appColorSecondary,
+                            SnackBar(
+                              content: Text(
+                                'Bem Vindo',
+                                style:
+                                    appStore.isDarkModeOn
+                                        ? colorPrimaryRegular16
+                                        : colorWhiteRegular16,
+                              ),
+                              backgroundColor:
+                                  appStore.isDarkModeOn
+                                      ? appColorPrimary
+                                      : appColorSecondary,
                             ),
                           );
 
@@ -250,9 +267,18 @@ class _ALoginScreenState extends State<ALoginScreen> {
                           });
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Você precisa se cadastrar!'),
-                              backgroundColor: appColorSecondary,
+                            SnackBar(
+                              content: Text(
+                                'Você precisa se cadastrar!',
+                                style:
+                                    appStore.isDarkModeOn
+                                        ? colorPrimaryRegular16
+                                        : colorWhiteRegular16,
+                              ),
+                              backgroundColor:
+                                  appStore.isDarkModeOn
+                                      ? appColorPrimary
+                                      : appColorSecondary,
                             ),
                           );
 
@@ -273,11 +299,18 @@ class _ALoginScreenState extends State<ALoginScreen> {
                         }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
+                          SnackBar(
                             content: Text(
                               'Dados Inválidos! Você já se cadastrou? Ou Faça o login usando o Google',
+                              style:
+                                  appStore.isDarkModeOn
+                                      ? colorPrimaryRegular16
+                                      : colorWhiteRegular16,
                             ),
-                            backgroundColor: appColorSecondary,
+                            backgroundColor:
+                                appStore.isDarkModeOn
+                                    ? appColorPrimary
+                                    : appColorSecondary,
                           ),
                         );
                       }
@@ -285,12 +318,21 @@ class _ALoginScreenState extends State<ALoginScreen> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: appColorSecondary,
+                  backgroundColor:
+                      appStore.isDarkModeOn
+                          ? appColorPrimary
+                          : appColorSecondary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
-                child: Text('Login', style: colorWhiteBold20),
+                child: Text(
+                  'Login',
+                  style:
+                      appStore.isDarkModeOn
+                          ? colorPrimaryBold20
+                          : colorWhiteBold20,
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -308,11 +350,18 @@ class _ALoginScreenState extends State<ALoginScreen> {
                             if (uid != null) {
                               if (uid == 'ja_existe') {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
+                                  SnackBar(
                                     content: Text(
                                       'Este email já possui cadastro usando email e senha. Faça login usando essa opção.',
+                                      style:
+                                          appStore.isDarkModeOn
+                                              ? colorPrimaryRegular16
+                                              : colorWhiteRegular16,
                                     ),
-                                    backgroundColor: appColorSecondary,
+                                    backgroundColor:
+                                        appStore.isDarkModeOn
+                                            ? appColorPrimary
+                                            : appColorSecondary,
                                   ),
                                 );
                               } else {
@@ -333,11 +382,18 @@ class _ALoginScreenState extends State<ALoginScreen> {
                                   });
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
+                                    SnackBar(
                                       content: Text(
                                         'Você precisa se cadastrar!',
+                                        style:
+                                            appStore.isDarkModeOn
+                                                ? colorPrimaryRegular16
+                                                : colorWhiteRegular16,
                                       ),
-                                      backgroundColor: appColorSecondary,
+                                      backgroundColor:
+                                          appStore.isDarkModeOn
+                                              ? appColorPrimary
+                                              : appColorSecondary,
                                     ),
                                   );
 
@@ -362,11 +418,18 @@ class _ALoginScreenState extends State<ALoginScreen> {
                               }
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
+                                SnackBar(
                                   content: Text(
                                     'Dados Inválidos! Você já se cadastrou?',
+                                    style:
+                                        appStore.isDarkModeOn
+                                            ? colorPrimaryRegular16
+                                            : colorWhiteRegular16,
                                   ),
-                                  backgroundColor: appColorSecondary,
+                                  backgroundColor:
+                                      appStore.isDarkModeOn
+                                          ? appColorPrimary
+                                          : appColorSecondary,
                                 ),
                               );
                             }
@@ -374,7 +437,7 @@ class _ALoginScreenState extends State<ALoginScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
                             appStore.isDarkModeOn
-                                ? context.cardColor
+                                ? appColorPrimary
                                 : appetitBrownColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
@@ -388,7 +451,13 @@ class _ALoginScreenState extends State<ALoginScreen> {
                             width: 70,
                             height: 70,
                           ),
-                          Text('Login com o Google', style: colorWhiteBold14),
+                          Text(
+                            'Login com o Google',
+                            style:
+                                appStore.isDarkModeOn
+                                    ? colorPrimaryBold16
+                                    : colorWhiteBold16,
+                          ),
                         ],
                       ),
                     ),

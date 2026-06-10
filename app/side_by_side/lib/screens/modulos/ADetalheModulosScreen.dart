@@ -1,4 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: file_names
+import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:side_by_side/components/modulos/AModuloCapaComponent.dart';
 import 'package:side_by_side/components/modulos/AModuloDescrptionComponent.dart';
@@ -7,19 +10,26 @@ import 'package:side_by_side/components/modulos/AModuloListLicao.dart';
 import 'package:side_by_side/components/modulos/AModuloProgressLicaoComponent.dart';
 import 'package:side_by_side/main.dart';
 import 'package:side_by_side/model/modulo.dart';
+import 'package:side_by_side/model/pg.dart';
 import 'package:side_by_side/model/usuario.dart';
 import 'package:side_by_side/store/pg_store.dart';
 import 'package:side_by_side/store/php.dart';
 import 'package:side_by_side/utils/AColors.dart';
-import 'package:flutter/material.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:side_by_side/utils/http_client.dart';
 
 // ignore: must_be_immutable
 class ADetalheModulosScreen extends StatefulWidget {
   int index;
+  Usuario usuario;
+  Pg pg;
   Modulos modulo;
-  ADetalheModulosScreen({super.key, required this.modulo, required this.index});
+  ADetalheModulosScreen({
+    super.key,
+    required this.index,
+    required this.usuario,
+    required this.pg,
+    required this.modulo,
+  });
 
   @override
   State<ADetalheModulosScreen> createState() => _ADetalheModulosScreenState();
@@ -61,7 +71,11 @@ class _ADetalheModulosScreenState extends State<ADetalheModulosScreen> {
       AModuloCapaComponent(modulo: widget.modulo),
       AModuloDescrptionComponent(modulo: widget.modulo),
       AModuloProgressLicaoComponent(modulo: widget.modulo),
-      AModuloListLicao(modulo: widget.modulo),
+      AModuloListLicao(
+        usuario: widget.usuario,
+        pg: widget.pg,
+        modulo: widget.modulo,
+      ),
       AModuloDiscussionComponent(modulo: widget.modulo),
     ];
 
@@ -140,23 +154,30 @@ class _ADetalheModulosScreenState extends State<ADetalheModulosScreen> {
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25),
-                        color: appColorSecondary,
+                        color:
+                            appStore.isDarkModeOn
+                                ? appColorPrimary
+                                : appColorSecondary,
                       ),
                       child: IconButton(
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.arrow_back_ios_outlined,
-                          color: appTextColorWhite,
+                          color:
+                              appStore.isDarkModeOn ? black : appTextColorWhite,
                         ),
                         onPressed: () {
                           finish(context);
                         },
                       ),
                     ),
-                    Text(
-                      widget.modulo.title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
+                    SizedBox(
+                      width: 50,
+                      child: Text(
+                        widget.modulo.title,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                        ),
                       ),
                     ),
                     Row(
@@ -168,14 +189,21 @@ class _ADetalheModulosScreenState extends State<ADetalheModulosScreen> {
                             child: Container(
                               width: 50,
                               height: 50,
-                              color: appColorSecondary,
+                              color:
+                                  appStore.isDarkModeOn
+                                      ? appColorPrimary
+                                      : appColorSecondary,
                               child: IconButton(
                                 icon: Icon(
                                   isLiked
                                       ? Icons.favorite
                                       : Icons.favorite_border_outlined,
                                   color:
-                                      isLiked ? Colors.red : appTextColorWhite,
+                                      isLiked
+                                          ? Colors.red
+                                          : appStore.isDarkModeOn
+                                          ? black
+                                          : appTextColorWhite,
                                 ),
                                 onPressed: () async {
                                   setState(() {
@@ -199,7 +227,10 @@ class _ADetalheModulosScreenState extends State<ADetalheModulosScreen> {
                             child: Container(
                               width: 50,
                               height: 50,
-                              color: appColorSecondary,
+                              color:
+                                  appStore.isDarkModeOn
+                                      ? appColorPrimary
+                                      : appColorSecondary,
                               child: IconButton(
                                 icon: Icon(
                                   isSaved
@@ -207,7 +238,9 @@ class _ADetalheModulosScreenState extends State<ADetalheModulosScreen> {
                                       : Icons.bookmark_border_outlined,
                                   color:
                                       isSaved
-                                          ? appColorPrimaryDarkLight
+                                          ? black
+                                          : appStore.isDarkModeOn
+                                          ? black
                                           : appTextColorWhite,
                                 ),
                                 onPressed: () async {
@@ -231,13 +264,19 @@ class _ADetalheModulosScreenState extends State<ADetalheModulosScreen> {
                       child: Container(
                         width: 50,
                         height: 30,
-                        color: appColorSecondary,
+                        color:
+                            appStore.isDarkModeOn
+                                ? appColorPrimary
+                                : appColorSecondary,
                         child: Center(
                           child: InkWell(
                             child: Text(
                               '$pageindex/${reelsPages.length}',
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color:
+                                    appStore.isDarkModeOn
+                                        ? black
+                                        : Colors.white,
                                 fontSize: 12,
                               ),
                             ),
@@ -279,11 +318,17 @@ class _ADetalheModulosScreenState extends State<ADetalheModulosScreen> {
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: appColorSecondary,
+                                  backgroundColor:
+                                      appStore.isDarkModeOn
+                                          ? appColorPrimary
+                                          : appColorSecondary,
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.arrow_back_ios_outlined,
-                                  color: appTextColorWhite,
+                                  color:
+                                      appStore.isDarkModeOn
+                                          ? black
+                                          : appTextColorWhite,
                                 ),
                               ),
                             ),
@@ -310,11 +355,17 @@ class _ADetalheModulosScreenState extends State<ADetalheModulosScreen> {
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: appColorSecondary,
+                                  backgroundColor:
+                                      appStore.isDarkModeOn
+                                          ? appColorPrimary
+                                          : appColorSecondary,
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.arrow_forward_ios_outlined,
-                                  color: appTextColorWhite,
+                                  color:
+                                      appStore.isDarkModeOn
+                                          ? black
+                                          : appTextColorWhite,
                                 ),
                               ),
                             ),

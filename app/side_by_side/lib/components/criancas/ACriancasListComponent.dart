@@ -53,13 +53,19 @@ class _ACriancasListComponentState extends State<ACriancasListComponent> {
                 child: Container(
                   height: 30,
                   width: 120,
-                  color: appColorPrimary,
+                  color:
+                      appStore.isDarkModeOn
+                          ? appColorSecondary
+                          : appColorPrimary,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.adjust_outlined,
-                        color: appColorSecondary,
+                        color:
+                            appStore.isDarkModeOn
+                                ? appColorPrimary
+                                : appColorSecondary,
                         size: 15,
                       ),
                       const SizedBox(width: 4),
@@ -161,9 +167,12 @@ class _ACriancasListComponentState extends State<ACriancasListComponent> {
                                               : appColorSecondary,
                                       height: 50,
                                       width: 50,
-                                      child: const Icon(
+                                      child: Icon(
                                         Icons.edit,
-                                        color: appTextColorWhite,
+                                        color:
+                                            appStore.isDarkModeOn
+                                                ? black
+                                                : appTextColorWhite,
                                       ),
                                     ),
                                   ),

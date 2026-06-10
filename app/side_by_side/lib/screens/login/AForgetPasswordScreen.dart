@@ -44,12 +44,16 @@ class _AForgetPasswordScreenState extends State<AForgetPasswordScreen> {
                     child: Container(
                       width: 50,
                       height: 50,
-                      color: appColorSecondary,
+                      color:
+                          appStore.isDarkModeOn
+                              ? appColorPrimary
+                              : appColorSecondary,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(25),
-                        child: const Icon(
+                        child: Icon(
                           Icons.arrow_back_ios_outlined,
-                          color: appTextColorWhite,
+                          color:
+                              appStore.isDarkModeOn ? black : appTextColorWhite,
                         ),
                         onTap:
                             () => Navigator.push(
@@ -80,19 +84,17 @@ class _AForgetPasswordScreenState extends State<AForgetPasswordScreen> {
                       child: TextFormField(
                         textInputAction: TextInputAction.next,
                         controller: emailController,
+                        style: colorPrimaryRegular16,
                         autovalidateMode: AutovalidateMode.always,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
+                          fillColor: appColorPrimary,
+                          filled: true,
                           border: InputBorder.none,
                           labelStyle: colorSecondaryBold14,
                           label: const Text('E-mail'),
                           hintText: 'Digite seu e-mail',
-                          filled: true,
                           hintStyle: const TextStyle(color: Colors.grey),
-                          fillColor:
-                              appStore.isDarkModeOn
-                                  ? context.cardColor
-                                  : appShadowColor,
                         ),
                       ),
                     ),
@@ -111,8 +113,17 @@ class _AForgetPasswordScreenState extends State<AForgetPasswordScreen> {
                         if (emailController.text == '') {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('Digite um e-mail válido'),
-                              backgroundColor: appColorSecondary,
+                              content: Text(
+                                'Digite um e-mail válido',
+                                style:
+                                    appStore.isDarkModeOn
+                                        ? colorPrimaryRegular16
+                                        : colorWhiteRegular16,
+                              ),
+                              backgroundColor:
+                                  appStore.isDarkModeOn
+                                      ? appColorPrimary
+                                      : appColorSecondary,
                             ),
                           );
                         } else {
@@ -121,8 +132,17 @@ class _AForgetPasswordScreenState extends State<AForgetPasswordScreen> {
                           ) async {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(value),
-                                backgroundColor: appColorSecondary,
+                                content: Text(
+                                  value,
+                                  style:
+                                      appStore.isDarkModeOn
+                                          ? colorPrimaryRegular16
+                                          : colorWhiteRegular16,
+                                ),
+                                backgroundColor:
+                                    appStore.isDarkModeOn
+                                        ? appColorPrimary
+                                        : appColorSecondary,
                               ),
                             );
                           });
@@ -130,7 +150,10 @@ class _AForgetPasswordScreenState extends State<AForgetPasswordScreen> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: appColorSecondary,
+                      backgroundColor:
+                          appStore.isDarkModeOn
+                              ? appColorPrimary
+                              : appColorSecondary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
@@ -138,12 +161,19 @@ class _AForgetPasswordScreenState extends State<AForgetPasswordScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Enviar', style: colorWhiteBold20),
+                        Text(
+                          'Enviar',
+                          style:
+                              appStore.isDarkModeOn
+                                  ? colorPrimaryBold20
+                                  : colorWhiteBold20,
+                        ),
                         SizedBox(width: 10),
                         Icon(
                           Icons.arrow_forward_ios_outlined,
                           size: 15,
-                          color: appTextColorWhite,
+                          color:
+                              appStore.isDarkModeOn ? black : appTextColorWhite,
                         ),
                       ],
                     ),

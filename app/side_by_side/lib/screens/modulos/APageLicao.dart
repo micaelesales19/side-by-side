@@ -10,6 +10,7 @@ import 'package:side_by_side/model/modulo.dart';
 import 'package:side_by_side/model/pg.dart';
 import 'package:side_by_side/model/usuario.dart';
 import 'package:side_by_side/screens/ADashboardScreen.dart';
+import 'package:side_by_side/screens/AMessagemScreen.dart';
 import 'package:side_by_side/screens/modulos/PageFilpBook.dart';
 import 'package:side_by_side/store/pg_store.dart';
 import 'package:side_by_side/store/php.dart';
@@ -43,13 +44,6 @@ class APageLicao extends StatefulWidget {
 class _APageLicaoState extends State<APageLicao> {
   bool naoMostrarNovamente = false;
   TimeOfDay? horarioSelecionado;
-
-  var image = Image.asset(
-    'assets/image/appetit/p3.jpg',
-    fit: BoxFit.cover,
-    color: Colors.black.withOpacity(0.5),
-    colorBlendMode: BlendMode.darken,
-  );
 
   final PgStore storePg = PgStore(
     repository: IFuncoesPHP(client: HttpClient()),
@@ -249,6 +243,7 @@ class _APageLicaoState extends State<APageLicao> {
   List<Devocional> devocionais_hj = [];
   List<Devocional> devocionais_antigo = [];
   List<ProgressoDevocional> checksDevocionais = [];
+  int totalCrianca = 0;
 
   getinfo() async {
     await storePg.getPgId(widget.usuario.uid);
@@ -310,6 +305,7 @@ class _APageLicaoState extends State<APageLicao> {
               .toList();
 
       checksDevocionais = storePg.progressoDevocionaisNotifier.value;
+      totalCrianca = storePg.listCriancas.value.length;
     });
   }
 
@@ -414,10 +410,7 @@ class _APageLicaoState extends State<APageLicao> {
                         ? false
                         : true;
 
-                /*DetalhesModulos detalhes =
-                    list_modulos
-                        .where((element) => element.idModulo == widget.modulo.id)
-                        .first;*/
+                final bool bloqueado = widget.pg.nLicao < widget.licao.id;
 
                 return Column(
                   children: [
@@ -440,10 +433,16 @@ class _APageLicaoState extends State<APageLicao> {
                             child: Container(
                               height: 50,
                               width: 50,
-                              color: appColorSecondary,
-                              child: const Icon(
+                              color:
+                                  appStore.isDarkModeOn
+                                      ? appColorPrimary
+                                      : appColorSecondary,
+                              child: Icon(
                                 Icons.arrow_back_ios_outlined,
-                                color: appTextColorWhite,
+                                color:
+                                    appStore.isDarkModeOn
+                                        ? black
+                                        : appTextColorWhite,
                               ),
                             ),
                           ),
@@ -457,7 +456,10 @@ class _APageLicaoState extends State<APageLicao> {
                                 child: Container(
                                   width: 50,
                                   height: 50,
-                                  color: appColorSecondary,
+                                  color:
+                                      appStore.isDarkModeOn
+                                          ? appColorPrimary
+                                          : appColorSecondary,
                                   child: IconButton(
                                     icon: Icon(
                                       isLiked
@@ -466,6 +468,8 @@ class _APageLicaoState extends State<APageLicao> {
                                       color:
                                           isLiked
                                               ? Colors.red
+                                              : appStore.isDarkModeOn
+                                              ? black
                                               : appTextColorWhite,
                                     ),
                                     onPressed: () async {
@@ -495,7 +499,10 @@ class _APageLicaoState extends State<APageLicao> {
                                 child: Container(
                                   width: 50,
                                   height: 50,
-                                  color: appColorSecondary,
+                                  color:
+                                      appStore.isDarkModeOn
+                                          ? appColorPrimary
+                                          : appColorSecondary,
                                   child: IconButton(
                                     icon: Icon(
                                       isSaved
@@ -503,7 +510,9 @@ class _APageLicaoState extends State<APageLicao> {
                                           : Icons.bookmark_border_outlined,
                                       color:
                                           isSaved
-                                              ? appColorPrimaryDarkLight
+                                              ? black
+                                              : appStore.isDarkModeOn
+                                              ? black
                                               : appTextColorWhite,
                                     ),
                                     onPressed: () async {
@@ -608,6 +617,34 @@ class _APageLicaoState extends State<APageLicao> {
                                 () =>
                                     progresso.isEmpty
                                         ? null
+                                        : bloqueado
+                                        ? {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              backgroundColor:
+                                                  appStore.isDarkModeOn
+                                                      ? appColorSecondary
+                                                      : appColorPrimary,
+                                              content: Text(
+                                                'Essa lição será liberada na próxima semana',
+                                                style:
+                                                    appStore.isDarkModeOn
+                                                        ? colorWhiteRegular16
+                                                        : colorPrimaryRegular16,
+                                              ),
+                                            ),
+                                          ),
+                                        }
+                                        : totalCrianca == 0
+                                        ? Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) => AMessagemScreen(),
+                                          ),
+                                        )
                                         : Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -656,7 +693,10 @@ class _APageLicaoState extends State<APageLicao> {
                                 ? Center(
                                   child: Text(
                                     'Estamos trabalhando para adicionar novos devocionais',
-                                    style: colorPrimaryRegular14,
+                                    style:
+                                        appStore.isDarkModeOn
+                                            ? colorWhiteRegular14
+                                            : colorPrimaryRegular14,
                                   ),
                                 )
                                 : ListView.builder(
@@ -770,8 +810,7 @@ class _APageLicaoState extends State<APageLicao> {
                                                                           ? Colors
                                                                               .grey
                                                                               .shade500
-                                                                          : context
-                                                                              .iconColor,
+                                                                          : black,
                                                                 ),
                                                                 maxLines:
                                                                     isExpandedDHJ[index]
@@ -1396,8 +1435,7 @@ class _APageLicaoState extends State<APageLicao> {
                                                                       ? Colors
                                                                           .grey
                                                                           .shade500
-                                                                      : context
-                                                                          .iconColor,
+                                                                      : black,
                                                             ),
                                                             maxLines:
                                                                 isExpandedDA[index]
@@ -1581,11 +1619,15 @@ class _APageLicaoState extends State<APageLicao> {
                             children: [
                               TextField(
                                 controller: _comentariosTextController,
+                                style:
+                                    appStore.isDarkModeOn
+                                        ? colorPrimaryRegular14
+                                        : colorWhiteRegular14,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   fillColor: appColorPrimary,
                                   filled: true,
-                                  labelText: 'Escreva aqui',
+                                  labelText: 'Escreva aqui...',
                                   labelStyle: const TextStyle(
                                     color: Colors.grey,
                                   ),

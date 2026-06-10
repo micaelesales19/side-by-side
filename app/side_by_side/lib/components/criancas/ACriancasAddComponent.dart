@@ -28,9 +28,16 @@ class _ACriancasAddComponentState extends State<ACriancasAddComponent> {
 
     if (userFire == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Faça o login novamente'),
-          backgroundColor: appColorSecondary,
+        SnackBar(
+          content: Text(
+            'Faça o login novamente',
+            style:
+                appStore.isDarkModeOn
+                    ? colorPrimaryRegular16
+                    : colorWhiteRegular16,
+          ),
+          backgroundColor:
+              appStore.isDarkModeOn ? appColorPrimary : appColorSecondary,
         ),
       );
 
@@ -69,6 +76,7 @@ class _ACriancasAddComponentState extends State<ACriancasAddComponent> {
             borderRadius: BorderRadius.circular(15),
             child: TextField(
               controller: _nameController,
+              style: colorPrimaryRegular16,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 fillColor: appColorPrimary,
@@ -89,6 +97,7 @@ class _ACriancasAddComponentState extends State<ACriancasAddComponent> {
             borderRadius: BorderRadius.circular(15),
             child: TextField(
               controller: _ageController,
+              style: colorPrimaryRegular16,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 border: InputBorder.none,
@@ -111,9 +120,18 @@ class _ACriancasAddComponentState extends State<ACriancasAddComponent> {
               }
               if (_nameController.text == '' || _ageController.text == '') {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Informações vazias'),
-                    backgroundColor: appColorSecondary,
+                  SnackBar(
+                    content: Text(
+                      'Informações vazias',
+                      style:
+                          appStore.isDarkModeOn
+                              ? colorPrimaryRegular16
+                              : colorWhiteRegular16,
+                    ),
+                    backgroundColor:
+                        appStore.isDarkModeOn
+                            ? appColorPrimary
+                            : appColorSecondary,
                   ),
                 );
               } else {
@@ -130,17 +148,35 @@ class _ACriancasAddComponentState extends State<ACriancasAddComponent> {
                         _ageController.text = '';
                         //sucesso
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Sucesso'),
-                            backgroundColor: appColorSecondary,
+                          SnackBar(
+                            content: Text(
+                              'Sucesso',
+                              style:
+                                  appStore.isDarkModeOn
+                                      ? colorPrimaryRegular16
+                                      : colorWhiteRegular16,
+                            ),
+                            backgroundColor:
+                                appStore.isDarkModeOn
+                                    ? appColorPrimary
+                                    : appColorSecondary,
                           ),
                         );
                       } else {
                         // algum erro//sucesso
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Erro'),
-                            backgroundColor: appColorSecondary,
+                          SnackBar(
+                            content: Text(
+                              'Erro',
+                              style:
+                                  appStore.isDarkModeOn
+                                      ? colorPrimaryRegular16
+                                      : colorWhiteRegular16,
+                            ),
+                            backgroundColor:
+                                appStore.isDarkModeOn
+                                    ? appColorPrimary
+                                    : appColorSecondary,
                           ),
                         );
                       }
@@ -148,7 +184,8 @@ class _ACriancasAddComponentState extends State<ACriancasAddComponent> {
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: appColorSecondary,
+              backgroundColor:
+                  appStore.isDarkModeOn ? appColorPrimary : appColorSecondary,
               padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
@@ -157,12 +194,18 @@ class _ACriancasAddComponentState extends State<ACriancasAddComponent> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Salvar', style: colorWhiteBold20),
+                Text(
+                  'Salvar',
+                  style:
+                      appStore.isDarkModeOn
+                          ? colorPrimaryBold20
+                          : colorWhiteBold20,
+                ),
                 const SizedBox(width: 8),
-                const Icon(
+                Icon(
                   Icons.check_circle_outline,
                   size: 17,
-                  color: appTextColorWhite,
+                  color: appStore.isDarkModeOn ? black : appTextColorWhite,
                 ),
               ],
             ),

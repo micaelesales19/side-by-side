@@ -1,21 +1,29 @@
 // ignore_for_file: file_names
-
-import 'package:provider/provider.dart';
 import 'package:side_by_side/main.dart';
 import 'package:side_by_side/model/licao.dart';
 import 'package:side_by_side/model/modulo.dart';
 import 'package:side_by_side/model/pg.dart';
 import 'package:side_by_side/model/usuario.dart';
+import 'package:side_by_side/screens/AMessagemScreen.dart';
 import 'package:side_by_side/screens/modulos/APageLicao.dart';
 import 'package:side_by_side/store/php.dart';
 import 'package:side_by_side/utils/AColors.dart';
 import 'package:flutter/material.dart';
+import 'package:side_by_side/utils/AConstants.dart';
 import 'package:side_by_side/utils/http_client.dart';
 
 // ignore: must_be_immutable
 class AModuloListLicao extends StatefulWidget {
   Modulos modulo;
-  AModuloListLicao({super.key, required this.modulo});
+  Pg pg;
+  Usuario usuario;
+
+  AModuloListLicao({
+    super.key,
+    required this.pg,
+    required this.usuario,
+    required this.modulo,
+  });
 
   @override
   State<AModuloListLicao> createState() => _AModuloListLicaoState();
@@ -26,6 +34,7 @@ class _AModuloListLicaoState extends State<AModuloListLicao> {
   final IFuncoesPHP repository = IFuncoesPHP(client: HttpClient());
 
   bool loading = false;
+  int totalCrianca = 0;
 
   @override
   void initState() {
@@ -35,11 +44,14 @@ class _AModuloListLicaoState extends State<AModuloListLicao> {
 
   void listarLicoes() async {
     List<Licaos> lista = await repository.getLicoes();
+    await storePg.getPgId(widget.usuario.uid);
+
     setState(() {
       listlicoes =
           lista
               .where((element) => element.idModulo == widget.modulo.id)
               .toList();
+      totalCrianca = storePg.listCriancas.value.length;
       loading = true;
     });
   }
@@ -47,11 +59,6 @@ class _AModuloListLicaoState extends State<AModuloListLicao> {
   @override
   Widget build(BuildContext context) {
     double alturaImagem = MediaQuery.of(context).size.height * 0.6;
-
-    Pg pg = Provider.of<PgProvider>(context, listen: false).getPg;
-    Usuario usuario =
-        Provider.of<UsuarioProvider>(context, listen: false).getUsuario;
-
     return loading
         ? Column(
           children: [
@@ -79,8 +86,48 @@ class _AModuloListLicaoState extends State<AModuloListLicao> {
                   padding: const EdgeInsets.all(16),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
+                    final bool bloqueado =
+                        widget.pg.nLicao < listlicoes[index].id;
                     return GestureDetector(
-                      onTap: () {
+                      onTap:
+                          () =>
+                              bloqueado
+                                  ? {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        backgroundColor:
+                                            appStore.isDarkModeOn
+                                                ? appColorSecondary
+                                                : appColorPrimary,
+                                        content: Text(
+                                          'Essa lição será liberada na próxima semana',
+                                          style:
+                                              appStore.isDarkModeOn
+                                                  ? colorWhiteRegular16
+                                                  : colorPrimaryRegular16,
+                                        ),
+                                      ),
+                                    ),
+                                  }
+                                  : totalCrianca == 0
+                                  ? Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AMessagemScreen(),
+                                    ),
+                                  )
+                                  : Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => APageLicao(
+                                            modulo: widget.modulo,
+                                            licao: listlicoes[index],
+                                            pg: widget.pg,
+                                            usuario: widget.usuario,
+                                          ),
+                                    ),
+                                  ) /*{
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -93,7 +140,7 @@ class _AModuloListLicaoState extends State<AModuloListLicao> {
                                 ),
                           ),
                         );
-                      },
+                      }*/,
                       child: Stack(
                         children: [
                           /*ClipRRect(
@@ -114,7 +161,9 @@ class _AModuloListLicaoState extends State<AModuloListLicao> {
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
                                   colors: [
-                                    appColorPrimary,
+                                    appStore.isDarkModeOn
+                                        ? appColorSecondary
+                                        : appColorPrimary,
                                     const Color.fromARGB(255, 29, 29, 29),
                                   ],
                                   begin: Alignment.topLeft,

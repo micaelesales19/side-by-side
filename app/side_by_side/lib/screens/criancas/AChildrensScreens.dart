@@ -1,6 +1,8 @@
 // ignore_for_file: file_names
+import 'package:nb_utils/nb_utils.dart';
 import 'package:side_by_side/components/criancas/ACriancasAddComponent.dart';
 import 'package:side_by_side/components/criancas/ACriancasListComponent.dart';
+import 'package:side_by_side/main.dart';
 import 'package:side_by_side/screens/ADashboardScreen.dart';
 import 'package:side_by_side/utils/AColors.dart';
 import 'package:flutter/material.dart';
@@ -61,12 +63,15 @@ class _AChildrensScreensState extends State<AChildrensScreens> {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
-                    color: appColorSecondary,
+                    color:
+                        appStore.isDarkModeOn
+                            ? appColorPrimary
+                            : appColorSecondary,
                   ),
                   child: IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.arrow_back_ios_outlined,
-                      color: appTextColorWhite,
+                      color: appStore.isDarkModeOn ? black : appTextColorWhite,
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -87,13 +92,16 @@ class _AChildrensScreensState extends State<AChildrensScreens> {
                   child: Container(
                     width: 50,
                     height: 30,
-                    color: appColorSecondary,
+                    color:
+                        appStore.isDarkModeOn
+                            ? appColorPrimary
+                            : appColorSecondary,
                     child: Center(
                       child: InkWell(
                         child: Text(
                           "$pageindex/2",
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: appStore.isDarkModeOn ? black : white,
                             fontSize: 12,
                           ),
                         ),
@@ -133,11 +141,17 @@ class _AChildrensScreensState extends State<AChildrensScreens> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: appColorSecondary,
+                              backgroundColor:
+                                  appStore.isDarkModeOn
+                                      ? appColorPrimary
+                                      : appColorSecondary,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.arrow_back_ios_outlined,
-                              color: appTextColorWhite,
+                              color:
+                                  appStore.isDarkModeOn
+                                      ? black
+                                      : appTextColorWhite,
                             ),
                           ),
                         ),
@@ -161,11 +175,17 @@ class _AChildrensScreensState extends State<AChildrensScreens> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: appColorSecondary,
+                              backgroundColor:
+                                  appStore.isDarkModeOn
+                                      ? appColorPrimary
+                                      : appColorSecondary,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.arrow_forward_ios_outlined,
-                              color: appTextColorWhite,
+                              color:
+                                  appStore.isDarkModeOn
+                                      ? black
+                                      : appTextColorWhite,
                             ),
                           ),
                         ),

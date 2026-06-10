@@ -5,6 +5,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:side_by_side/main.dart';
+import 'package:side_by_side/utils/AColors.dart';
+import 'package:side_by_side/utils/AConstants.dart';
 
 class PushNotificationsWeb {
   static final _firebaseMessaging = FirebaseMessaging.instance;
@@ -102,7 +105,13 @@ class PushNotificationsWeb {
           SnackBar(
             content: Text(
               "${message.notification?.title ?? 'Nova notificação'}\n${message.notification?.body ?? ''}",
+              style:
+                  appStore.isDarkModeOn
+                      ? colorPrimaryRegular16
+                      : colorWhiteRegular16,
             ),
+            backgroundColor:
+                appStore.isDarkModeOn ? appColorPrimary : appColorSecondary,
             duration: const Duration(seconds: 5),
           ),
         );

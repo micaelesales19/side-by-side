@@ -41,7 +41,7 @@ class _AWelcomeScreenState extends State<AWelcomeScreen> {
         automaticallyImplyLeading: false,
         leading: Container(
           decoration: BoxDecoration(
-            color: appColorSecondary,
+            color: appStore.isDarkModeOn ? appColorPrimary : appColorSecondary,
             borderRadius: BorderRadius.circular(25),
           ),
           margin: const EdgeInsets.only(left: 8.0, top: 8),
@@ -49,9 +49,9 @@ class _AWelcomeScreenState extends State<AWelcomeScreen> {
           width: 50,
           child: InkWell(
             onTap: () => Navigator.pop(context),
-            child: const Icon(
+            child: Icon(
               Icons.arrow_back_ios_outlined,
-              color: appColorPrimaryLight,
+              color: appStore.isDarkModeOn ? black : appColorPrimaryLight,
               size: 20,
             ),
           ),
@@ -69,7 +69,8 @@ class _AWelcomeScreenState extends State<AWelcomeScreen> {
         actions: [
           Container(
             decoration: BoxDecoration(
-              color: appColorSecondary,
+              color:
+                  appStore.isDarkModeOn ? appColorPrimary : appColorSecondary,
               borderRadius: BorderRadius.circular(25),
             ),
             margin: const EdgeInsets.only(top: 8, right: 8),
@@ -78,9 +79,9 @@ class _AWelcomeScreenState extends State<AWelcomeScreen> {
             child: InkWell(
               onTap: () => abrirwhatsapp(Uri.parse(whatsappUrl)),
               borderRadius: BorderRadius.circular(25),
-              child: const Icon(
+              child: Icon(
                 Icons.help_outline_outlined,
-                color: appColorPrimaryLight,
+                color: appStore.isDarkModeOn ? black : appColorPrimaryLight,
                 size: 20,
               ),
             ),
@@ -177,11 +178,18 @@ class _AWelcomeScreenState extends State<AWelcomeScreen> {
                               if (uid != null) {
                                 if (uid == 'ja_existe') {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
+                                    SnackBar(
                                       content: Text(
                                         'Este email já possui cadastro usando email e senha. Faça login usando essa opção.',
+                                        style:
+                                            appStore.isDarkModeOn
+                                                ? colorPrimaryRegular16
+                                                : colorWhiteRegular16,
                                       ),
-                                      backgroundColor: appColorPrimary,
+                                      backgroundColor:
+                                          appStore.isDarkModeOn
+                                              ? appColorPrimary
+                                              : appColorSecondary,
                                     ),
                                   );
 
@@ -218,11 +226,18 @@ class _AWelcomeScreenState extends State<AWelcomeScreen> {
                                     );
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
+                                      SnackBar(
                                         content: Text(
                                           'Você precisa se cadastrar!',
+                                          style:
+                                              appStore.isDarkModeOn
+                                                  ? colorPrimaryRegular16
+                                                  : colorWhiteRegular16,
                                         ),
-                                        backgroundColor: appColorPrimary,
+                                        backgroundColor:
+                                            appStore.isDarkModeOn
+                                                ? appColorPrimary
+                                                : appColorSecondary,
                                       ),
                                     );
 
@@ -244,11 +259,18 @@ class _AWelcomeScreenState extends State<AWelcomeScreen> {
                                 }
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
+                                  SnackBar(
                                     content: Text(
                                       'Dados Inválidos! Você já se cadastrou?',
+                                      style:
+                                          appStore.isDarkModeOn
+                                              ? colorPrimaryRegular16
+                                              : colorWhiteRegular16,
                                     ),
-                                    backgroundColor: appColorPrimary,
+                                    backgroundColor:
+                                        appStore.isDarkModeOn
+                                            ? appColorPrimary
+                                            : appColorSecondary,
                                   ),
                                 );
                               }
@@ -256,7 +278,7 @@ class _AWelcomeScreenState extends State<AWelcomeScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
                               appStore.isDarkModeOn
-                                  ? context.cardColor
+                                  ? appColorPrimary
                                   : appetitBrownColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
@@ -272,7 +294,10 @@ class _AWelcomeScreenState extends State<AWelcomeScreen> {
                             ),
                             Text(
                               'Registre-se com o Google',
-                              style: colorWhiteBold14,
+                              style:
+                                  appStore.isDarkModeOn
+                                      ? colorPrimaryBold16
+                                      : colorWhiteBold16,
                             ),
                           ],
                         ),

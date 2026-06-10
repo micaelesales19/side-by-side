@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:side_by_side/main.dart';
 import 'package:side_by_side/model/usuario.dart';
@@ -52,7 +53,10 @@ class _ANotificationFragmentState extends State<ANotificationFragment> {
               Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: appColorSecondary,
+                  color:
+                      appStore.isDarkModeOn
+                          ? appColorPrimary
+                          : appColorSecondary,
                   borderRadius: BorderRadius.circular(25),
                 ),
                 child: IconButton(
@@ -62,7 +66,7 @@ class _ANotificationFragmentState extends State<ANotificationFragment> {
                   },
                   icon: Icon(
                     Icons.delete_outline_outlined,
-                    color: appTextColorWhite,
+                    color: appStore.isDarkModeOn ? black : appTextColorWhite,
                     size: 14,
                   ),
                 ),
@@ -74,8 +78,14 @@ class _ANotificationFragmentState extends State<ANotificationFragment> {
             stream: notificationsRef.snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
-                return const Center(
-                  child: Text('Erro ao carregar notificações'),
+                return Center(
+                  child: Text(
+                    'Erro ao carregar notificações',
+                    style:
+                        appStore.isDarkModeOn
+                            ? colorPrimaryRegular16
+                            : colorWhiteRegular16,
+                  ),
                 );
               }
 
@@ -93,7 +103,7 @@ class _ANotificationFragmentState extends State<ANotificationFragment> {
               final docs = snapshot.data!.docs;
 
               if (docs.isEmpty) {
-                return const Center(child: Text('Nenhuma notificação'));
+                return Center(child: Text('Nenhuma notificação'));
               }
 
               return ListView.builder(
@@ -104,7 +114,6 @@ class _ANotificationFragmentState extends State<ANotificationFragment> {
                     const NeverScrollableScrollPhysics(), // ✅ Evita conflito de scroll
                 itemBuilder: (context, index) {
                   final data = docs[index].data() as Map<String, dynamic>;
-
                   /*return ListTile(
                     title: Text(data['title'] ?? ''),
                     subtitle: Text(data['body'] ?? ''),
@@ -121,7 +130,13 @@ class _ANotificationFragmentState extends State<ANotificationFragment> {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(Icons.notifications, color: appColorSecondary),
+                      Icon(
+                        Icons.notifications,
+                        color:
+                            appStore.isDarkModeOn
+                                ? appColorPrimary
+                                : appColorSecondary,
+                      ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Column(
@@ -159,7 +174,10 @@ class _ANotificationFragmentState extends State<ANotificationFragment> {
                       Container(
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: appColorSecondary,
+                          color:
+                              appStore.isDarkModeOn
+                                  ? appColorPrimary
+                                  : appColorSecondary,
                           borderRadius: BorderRadius.circular(25),
                         ),
                         child: IconButton(
@@ -171,7 +189,10 @@ class _ANotificationFragmentState extends State<ANotificationFragment> {
                           },
                           icon: Icon(
                             Icons.delete_outline_outlined,
-                            color: appTextColorWhite,
+                            color:
+                                appStore.isDarkModeOn
+                                    ? black
+                                    : appTextColorWhite,
                             size: 15,
                           ),
                         ),
@@ -182,169 +203,6 @@ class _ANotificationFragmentState extends State<ANotificationFragment> {
               );
             },
           ),
-          /*Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "Recentes",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(height: 16),
-              ListView.builder(
-                padding: EdgeInsets.zero,
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: mynotifications.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(35),
-                          child: Image.asset(
-                            mynotifications[index].image.toString(),
-                            height: 50,
-                            width: 50,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              RichText(
-                                text: TextSpan(
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text:
-                                          mynotifications[index].name
-                                              .toString(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        color: context.iconColor,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text:
-                                          mynotifications[index].message
-                                              .toString(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w300,
-                                        color: context.iconColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                mynotifications[index].time.toString(),
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            mynotifications[index].recipeimage.toString(),
-                            height: 45,
-                            width: 45,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Older Notifications',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(height: 16),
-              ListView.builder(
-                padding: EdgeInsets.zero,
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: mynotifications.length.clamp(0, 5),
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(35),
-                          child: Image.asset(
-                            mynotifications[index].image.toString(),
-                            height: 50,
-                            width: 50,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              RichText(
-                                text: TextSpan(
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text:
-                                          mynotifications[index].name
-                                              .toString(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        color: context.iconColor,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text:
-                                          mynotifications[index].message
-                                              .toString(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w300,
-                                        color: context.iconColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                mynotifications[index].time.toString(),
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            mynotifications[index].recipeimage.toString(),
-                            height: 45,
-                            width: 45,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),*/
         ],
       ),
     );

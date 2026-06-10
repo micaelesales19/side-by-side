@@ -40,6 +40,13 @@ TextStyle colorPrimaryBold60 = const TextStyle(
   height: 1.1,
 );
 
+TextStyle colorPrimarySemiBold16 = const TextStyle(
+  fontSize: 16,
+  color: appTextColorPrimary,
+  fontFamily: 'SB',
+  height: 1.1,
+);
+
 TextStyle colorPrimarySemiBold25 = const TextStyle(
   fontSize: 25,
   color: appTextColorPrimary,

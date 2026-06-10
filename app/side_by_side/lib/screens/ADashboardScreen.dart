@@ -1,12 +1,14 @@
 // ignore_for_file: file_names
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:side_by_side/fragments/AHomeFragment.dart';
 import 'package:side_by_side/fragments/ANotificationFragment.dart';
 import 'package:side_by_side/fragments/AProfileFragment.dart';
 import 'package:side_by_side/fragments/ASearchFragment.dart';
 import 'package:flutter/material.dart';
+import 'package:side_by_side/main.dart';
 import 'package:side_by_side/model/usuario.dart';
 import 'package:side_by_side/utils/AColors.dart';
 
@@ -74,15 +76,17 @@ class _ADashboardScreenState extends State<ADashboardScreen> {
         body: widgetOption.elementAt(selectedItem),
         bottomNavigationBar: BottomNavigationBar(
           iconSize: 25,
-          backgroundColor: appColorSecondary,
+          backgroundColor:
+              appStore.isDarkModeOn ? appColorPrimary : appColorSecondary,
           type: BottomNavigationBarType.fixed,
           currentIndex: selectedItem,
           showUnselectedLabels: false,
           showSelectedLabels: false,
           onTap: onTapSelection,
           elevation: 0,
-          unselectedItemColor: Colors.white,
-          selectedItemColor: appColorPrimary,
+          unselectedItemColor: appStore.isDarkModeOn ? black : Colors.white,
+          selectedItemColor:
+              appStore.isDarkModeOn ? appColorSecondary : appColorPrimary,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined),

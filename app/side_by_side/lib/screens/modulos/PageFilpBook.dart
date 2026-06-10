@@ -87,20 +87,6 @@ class _PageFlipBookState extends State<PageFlipBook> {
 
   @override
   Widget build(BuildContext context) {
-    //final repository = Provider.of<LicoesRepository>(context).licoes;
-
-    /*List<LicaoFlipPage> licoes =
-        storePg
-            .getlicoesFlip(context)
-            .where(
-              (element) =>
-                  element.idModulo == widget.modulo.id &&
-                  element.idLicao == widget.licao.nLicao,
-            )
-            .toList();*/
-
-    //List<LicaoFlipPage> licoes_so_um = [licoes.last];
-
     return Scaffold(
       body: ValueListenableBuilder<List<LicaoFlipPage>>(
         valueListenable: repository.licoesNotifier,
@@ -147,10 +133,16 @@ class _PageFlipBookState extends State<PageFlipBook> {
 
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    backgroundColor: appColorSecondary,
+                    backgroundColor:
+                        appStore.isDarkModeOn
+                            ? appColorPrimary
+                            : appColorSecondary,
                     content: Text(
                       'Lição finalizada! Aguarde...',
-                      style: colorWhiteSemiBold16,
+                      style:
+                          appStore.isDarkModeOn
+                              ? colorPrimarySemiBold16
+                              : colorWhiteSemiBold16,
                     ),
                     duration: Duration(milliseconds: 1500),
                   ),
@@ -179,53 +171,6 @@ class _PageFlipBookState extends State<PageFlipBook> {
       ),
     );
   }
-
-  /*Widget lastPage() {
-    //atualiza();
-    //return _AutoFinishPage(onFinish: atualiza);
-
-    return Container(
-      color: Color(0xff739e59),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text('Lição Finalizada!', style: colorPrimarySemiBold30),
-          IconButton(
-            onPressed: atualiza,
-            color: Colors.white,
-            style: TextButton.styleFrom(backgroundColor: appColorPrimary),
-            icon: Icon(Icons.play_arrow_outlined),
-          ),
-        ],
-      ),
-    );
-  }
-
-  atualiza() async {
-    await storePg.atualizarProgresso(
-      widget.idProgresso,
-      widget.usuario.uid,
-      widget.pg.id.toString(),
-      widget.pg.idModulo.toString(),
-      widget.pg.nLicao.toString(),
-    );
-
-    //carregarLicoes(); // 🔥 recarrega páginas
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder:
-            (context) => APageLicao(
-              modulo: widget.modulo,
-              licao: widget.licao,
-              pg: widget.pg,
-              usuario: widget.usuario,
-            ),
-      ),
-    );
-  }*/
 
   Widget demoPage(BuildContext context, LicaoFlipPage licao) {
     Size size = MediaQuery.of(context).size;
@@ -258,41 +203,6 @@ class _PageFlipBookState extends State<PageFlipBook> {
             child: textosPage(size, licao.page.textos),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _AutoFinishPage extends StatefulWidget {
-  final VoidCallback onFinish;
-
-  const _AutoFinishPage({required this.onFinish});
-
-  @override
-  State<_AutoFinishPage> createState() => _AutoFinishPageState();
-}
-
-class _AutoFinishPageState extends State<_AutoFinishPage> {
-  @override
-  void initState() {
-    super.initState();
-
-    // Aguarda 3 segundos e chama a função
-    Future.delayed(const Duration(seconds: 3), () {
-      widget.onFinish();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: const Color(0xff739e59),
-      child: Center(
-        child: Text(
-          'Lição Finalizada!',
-          style: colorPrimarySemiBold30,
-          textAlign: TextAlign.center,
-        ),
       ),
     );
   }

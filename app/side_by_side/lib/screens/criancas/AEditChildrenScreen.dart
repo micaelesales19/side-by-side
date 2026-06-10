@@ -41,9 +41,16 @@ class _AEditChildrenScreenState extends State<AEditChildrenScreen> {
 
     if (userFire == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Faça o login novamente'),
-          backgroundColor: appColorSecondary,
+        SnackBar(
+          content: Text(
+            'Faça o login novamente',
+            style:
+                appStore.isDarkModeOn
+                    ? colorPrimaryRegular16
+                    : colorWhiteRegular16,
+          ),
+          backgroundColor:
+              appStore.isDarkModeOn ? appColorPrimary : appColorSecondary,
         ),
       );
 
@@ -84,12 +91,15 @@ class _AEditChildrenScreenState extends State<AEditChildrenScreen> {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
-                    color: appColorSecondary,
+                    color:
+                        appStore.isDarkModeOn
+                            ? appColorPrimary
+                            : appColorSecondary,
                   ),
                   child: IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.arrow_back_ios_outlined,
-                      color: appTextColorWhite,
+                      color: appStore.isDarkModeOn ? black : appTextColorWhite,
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -124,6 +134,7 @@ class _AEditChildrenScreenState extends State<AEditChildrenScreen> {
                   borderRadius: BorderRadius.circular(15),
                   child: TextField(
                     controller: _nameController,
+                    style: colorPrimaryRegular16,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       fillColor: appColorPrimary,
@@ -144,6 +155,7 @@ class _AEditChildrenScreenState extends State<AEditChildrenScreen> {
                   borderRadius: BorderRadius.circular(15),
                   child: TextField(
                     controller: _ageController,
+                    style: colorPrimaryRegular16,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -186,9 +198,18 @@ class _AEditChildrenScreenState extends State<AEditChildrenScreen> {
                           if (_nameController.text == '' ||
                               _ageController.text == '') {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Informações vazias'),
-                                backgroundColor: appColorSecondary,
+                              SnackBar(
+                                content: Text(
+                                  'Informações vazias',
+                                  style:
+                                      appStore.isDarkModeOn
+                                          ? colorPrimaryRegular16
+                                          : colorWhiteRegular16,
+                                ),
+                                backgroundColor:
+                                    appStore.isDarkModeOn
+                                        ? appColorPrimary
+                                        : appColorSecondary,
                               ),
                             );
                           } else {
@@ -204,9 +225,18 @@ class _AEditChildrenScreenState extends State<AEditChildrenScreen> {
                                   if (value) {
                                     //sucesso
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Sucesso'),
-                                        backgroundColor: appColorSecondary,
+                                      SnackBar(
+                                        content: Text(
+                                          'Sucesso',
+                                          style:
+                                              appStore.isDarkModeOn
+                                                  ? colorPrimaryRegular16
+                                                  : colorWhiteRegular16,
+                                        ),
+                                        backgroundColor:
+                                            appStore.isDarkModeOn
+                                                ? appColorPrimary
+                                                : appColorSecondary,
                                       ),
                                     );
 
@@ -222,9 +252,18 @@ class _AEditChildrenScreenState extends State<AEditChildrenScreen> {
                                   } else {
                                     // algum erro
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Erro'),
-                                        backgroundColor: appColorSecondary,
+                                      SnackBar(
+                                        content: Text(
+                                          'Erro',
+                                          style:
+                                              appStore.isDarkModeOn
+                                                  ? colorPrimaryRegular16
+                                                  : colorWhiteRegular16,
+                                        ),
+                                        backgroundColor:
+                                            appStore.isDarkModeOn
+                                                ? appColorPrimary
+                                                : appColorSecondary,
                                       ),
                                     );
                                   }
@@ -232,7 +271,10 @@ class _AEditChildrenScreenState extends State<AEditChildrenScreen> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: appColorSecondary,
+                          backgroundColor:
+                              appStore.isDarkModeOn
+                                  ? appColorPrimary
+                                  : appColorSecondary,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 48,
                             vertical: 16,
@@ -244,12 +286,21 @@ class _AEditChildrenScreenState extends State<AEditChildrenScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('Savar', style: colorWhiteBold20),
+                            Text(
+                              'Savar',
+                              style:
+                                  appStore.isDarkModeOn
+                                      ? colorPrimaryBold20
+                                      : colorWhiteBold20,
+                            ),
                             const SizedBox(width: 8),
-                            const Icon(
+                            Icon(
                               Icons.arrow_forward_ios_outlined,
                               size: 15,
-                              color: appTextColorWhite,
+                              color:
+                                  appStore.isDarkModeOn
+                                      ? black
+                                      : appTextColorWhite,
                             ),
                           ],
                         ),

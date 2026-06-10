@@ -185,7 +185,7 @@ class _ADiscussionLicaoComponentState extends State<ADiscussionLicaoComponent> {
                                   ],
                                 ),
                               ),
-                              const Expanded(
+                              /*const Expanded(
                                 flex: 39,
                                 child: Row(
                                   children: [
@@ -193,7 +193,7 @@ class _ADiscussionLicaoComponentState extends State<ADiscussionLicaoComponent> {
                                     Text('Responder'),
                                   ],
                                 ),
-                              ),
+                              ),*/
                             ],
                           ),
                         ],

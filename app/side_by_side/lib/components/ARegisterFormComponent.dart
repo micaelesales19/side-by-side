@@ -2,7 +2,6 @@
 // ignore_for_file: file_names, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:search_cep/search_cep.dart';
 
 import 'package:side_by_side/main.dart';
@@ -79,7 +78,10 @@ class _FormInformacoesEnderecoState extends State<FormInformacoesEndereco> {
                 child: FittedBox(
                   fit: BoxFit.contain,
                   child: Switch(
-                    activeColor: appColorSecondary,
+                    activeColor:
+                        appStore.isDarkModeOn
+                            ? appColorPrimary
+                            : appColorSecondary,
                     value: widget.isPais,
                     onChanged: (value) {
                       setState(() {
@@ -102,17 +104,15 @@ class _FormInformacoesEnderecoState extends State<FormInformacoesEndereco> {
                   textInputAction: TextInputAction.next,
                   controller: widget.cepController,
                   keyboardType: TextInputType.number,
+                  style: colorPrimaryRegular16,
                   decoration: InputDecoration(
                     border: InputBorder.none,
+                    fillColor: appColorPrimary,
                     labelStyle: colorSecondaryBold14,
+                    filled: true,
                     labelText: 'CEP',
                     hintText: 'Digite seu CEP',
                     hintStyle: colorSecondaryBold14,
-                    fillColor:
-                        appStore.isDarkModeOn
-                            ? context.cardColor
-                            : appShadowColor,
-                    filled: true,
                   ),
                   maxLength: 8,
                   onChanged: (value) {
@@ -141,17 +141,15 @@ class _FormInformacoesEnderecoState extends State<FormInformacoesEndereco> {
                 child: TextFormField(
                   textInputAction: TextInputAction.next,
                   controller: widget.paisController,
+                  style: colorPrimaryRegular16,
                   decoration: InputDecoration(
                     border: InputBorder.none,
+                    fillColor: appColorPrimary,
+                    filled: true,
                     labelStyle: colorSecondaryBold14,
                     labelText: 'Pais',
                     hintText: 'Digite seu Pais',
                     hintStyle: colorSecondaryBold14,
-                    fillColor:
-                        appStore.isDarkModeOn
-                            ? context.cardColor
-                            : appShadowColor,
-                    filled: true,
                   ),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -173,17 +171,15 @@ class _FormInformacoesEnderecoState extends State<FormInformacoesEndereco> {
                 textInputAction: TextInputAction.next,
                 controller: widget.estadoController,
                 readOnly: true,
+                style: colorPrimaryRegular16,
                 decoration: InputDecoration(
                   border: InputBorder.none,
+                  fillColor: appColorPrimary,
+                  filled: true,
                   labelStyle: colorSecondaryBold14,
                   labelText: 'Estado',
                   hintText: 'Digite seu Estado',
                   hintStyle: colorSecondaryBold14,
-                  fillColor:
-                      appStore.isDarkModeOn
-                          ? context.cardColor
-                          : appShadowColor,
-                  filled: true,
                 ),
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -204,16 +200,14 @@ class _FormInformacoesEnderecoState extends State<FormInformacoesEndereco> {
                 textInputAction: TextInputAction.next,
                 controller: widget.cidadeController,
                 readOnly: true,
+                style: colorPrimaryRegular16,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   labelStyle: colorSecondaryBold14,
                   labelText: 'Cidade',
                   hintText: 'Digite seu Cidade',
                   hintStyle: colorSecondaryBold14,
-                  fillColor:
-                      appStore.isDarkModeOn
-                          ? context.cardColor
-                          : appShadowColor,
+                  fillColor: appColorPrimary,
                   filled: true,
                 ),
                 validator: (value) {
@@ -289,16 +283,14 @@ class FormInformacoesPessoais extends StatelessWidget {
                   child: TextFormField(
                     textInputAction: TextInputAction.next,
                     controller: nameController,
+                    style: colorPrimaryRegular16,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       labelStyle: colorSecondaryBold14,
                       labelText: 'Nome Completo',
                       hintText: 'Digite o nome completo',
                       hintStyle: colorSecondaryBold14,
-                      fillColor:
-                          appStore.isDarkModeOn
-                              ? context.cardColor
-                              : appShadowColor,
+                      fillColor: appColorPrimary,
                       filled: true,
                     ),
                     validator: (value) {
@@ -331,16 +323,14 @@ class FormInformacoesPessoais extends StatelessWidget {
                     textInputAction: TextInputAction.next,
                     controller: telefoneController,
                     keyboardType: TextInputType.number,
+                    style: colorPrimaryRegular16,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       labelStyle: colorSecondaryBold14,
                       labelText: '(DDD) *****-****',
                       hintText: 'Digite um telefone',
                       hintStyle: colorSecondaryBold14,
-                      fillColor:
-                          appStore.isDarkModeOn
-                              ? context.cardColor
-                              : appShadowColor,
+                      fillColor: appColorPrimary,
                       filled: true,
                     ),
                     validator: (value) {
@@ -408,16 +398,14 @@ class _FormInformacoesEmaileSenhaState
                     textInputAction: TextInputAction.next,
                     controller: widget.emailController,
                     keyboardType: TextInputType.emailAddress,
+                    style: colorPrimaryRegular16,
                     decoration: InputDecoration(
                       labelStyle: colorSecondaryBold14,
                       border: InputBorder.none,
                       labelText: 'E-mail',
                       hintText: 'Digite o e-mail correto',
                       hintStyle: colorSecondaryBold14,
-                      fillColor:
-                          appStore.isDarkModeOn
-                              ? context.cardColor
-                              : appShadowColor,
+                      fillColor: appColorPrimary,
                       filled: true,
                     ),
                     validator: (value) {
@@ -451,16 +439,14 @@ class _FormInformacoesEmaileSenhaState
                   child: TextFormField(
                     obscureText: viewPassword,
                     controller: widget.passController,
+                    style: colorPrimaryRegular16,
                     decoration: InputDecoration(
                       labelStyle: colorSecondaryBold14,
                       border: InputBorder.none,
                       labelText: 'Senha',
                       hintText: 'Coloque sua senha',
                       filled: true,
-                      fillColor:
-                          appStore.isDarkModeOn
-                              ? context.cardColor
-                              : appShadowColor,
+                      fillColor: appColorPrimary,
                       suffixIcon: IconButton(
                         onPressed:
                             () => setState(() => viewPassword = !viewPassword),
