@@ -1313,7 +1313,94 @@ class Funcao
         }
     }
 
+    public function addPerguntaPai($idLider, $idPergunta)
+    {
+        require_once '../conexao.php';
+        $hoje = date('Y-m-d');
+
+        if (empty($idLider)) {
+            echo json_encode("dados_vazios");
+            exit;
+        }
+
+        $query = "SELECT * FROM pergunta_mostrada WHERE id_lider = '$idLider' AND DATE(data_mostrada) = '$hoje'";
+        $result = mysqli_query($db, $query);
+        $cont = mysqli_num_rows($result);
+
+        if ($cont == 0) {
+            $sqlSalvar = "INSERT INTO pergunta_mostrada(
+                    id_lider,
+                    id_pergunta,
+                    data_mostrada
+                )
+                VALUES (
+                    '$idLider',
+                    '$idPergunta',
+                    CURDATE()
+                )
+            ";
+            mysqli_query($db, $sqlSalvar);
+            echo json_encode("sucesso");
+        } else {
+            echo json_encode("ja_respondeu_hoje");
+            exit;
+        }
+    }
+
     public function getPerguntaPai($idLider)
+    {
+        require_once '../conexao.php';
+
+        if (empty($idLider)) {
+            echo json_encode("dados_vazios");
+            exit;
+        }
+
+        $sql = "SELECT
+            p.id,
+            p.id_modulo,
+            p.n_licao,
+            p.texto,
+
+            CASE
+                WHEN pm.id IS NULL THEN false
+                ELSE true
+            END AS respondida
+
+        FROM pergunte_ao_pai p
+
+        LEFT JOIN pergunta_mostrada pm
+            ON pm.id_pergunta = p.id
+            AND pm.id_lider = '$idLider'
+
+        ORDER BY p.id
+    ";
+
+        $result = mysqli_query($db, $sql);
+
+        if (!$result) {
+            echo json_encode("db_erro");
+            exit;
+        }
+
+        $lista = [];
+
+        while ($row = mysqli_fetch_assoc($result)) {
+
+            $row['respondida'] = (bool)$row['respondida'];
+
+            $lista[] = $row;
+        }
+
+        if (count($lista) == 0) {
+            echo json_encode("dados_vazios");
+            exit;
+        }
+
+        echo json_encode($lista);
+    }
+
+    /*public function getPerguntaPai($idLider)
     {
         require_once '../conexao.php';
 
@@ -1423,5 +1510,5 @@ class Funcao
             // ==========================================
             echo json_encode($novaPergunta['texto']);
         }
-    }
+    }*/
 }
