@@ -13,6 +13,8 @@ $cidade = $_POST['cidade'] ?? $_GET['cidade'];
 
 $token = $_POST['token'] ?? $_GET['token'];
 
+$timezone = $_POST['timezone'] ?? $_GET['timezone'] ?? 'America/Sao_Paulo';
+
 $funcao = new Funcao();
 
-$funcao->login($uid, $nome, $email, $senha, $telefone, $pais, $estado, $cidade, $token);
+$funcao->login($uid, $nome, $email, $senha, $telefone, $pais, $estado, $cidade, $token, $timezone);
